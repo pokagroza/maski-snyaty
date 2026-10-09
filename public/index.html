@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Маски сняты — мафия в Смоленске</title>
+<meta name="description" content="«Маски сняты» — иммерсивное игровое шоу и клуб мафии в Смоленске. Открытые игры, турниры, корпоративы и дни рождения. 13 лет истории, более 1000 игр.">
+<meta name="theme-color" content="#0b0907">
+<meta property="og:title" content="Маски сняты — мафия в Смоленске">
+<meta property="og:description" content="Игра. Познание. Трансформация. Открытые игры, турниры, корпоративы и дни рождения.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/img/logo-512.png">
+<link rel="icon" href="/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="stylesheet" href="/vendor/fonts/cormorant-garamond/500.css">
+<link rel="stylesheet" href="/vendor/fonts/cormorant-garamond/600.css">
+<link rel="stylesheet" href="/vendor/fonts/cormorant-garamond/700.css">
+<link rel="stylesheet" href="/vendor/fonts/cormorant-garamond/500-italic.css">
+<link rel="stylesheet" href="/vendor/fonts/jost/300.css">
+<link rel="stylesheet" href="/vendor/fonts/jost/400.css">
+<link rel="stylesheet" href="/vendor/fonts/jost/500.css">
+<link rel="stylesheet" href="/vendor/fonts/jost/600.css">
+<link rel="stylesheet" href="/vendor/fonts/marck-script/400.css">
+<link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<div class="cursor" id="cursor" aria-hidden="true"><span id="cursorLabel">Вскрыть</span></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="dossier" id="dossier" hidden role="dialog" aria-modal="true" aria-label="Досье игрока">
+  <div class="dossier-panel" id="dossierPanel" tabindex="-1"></div>
+</div>
+<div class="secret" id="secret" hidden role="dialog" aria-modal="true" aria-labelledby="secretTitle">
+  <div class="secret-card" id="secretCard">
+    <div class="secret-inner">
+      <img src="/img/logo-mask-t.png" alt="" width="80" height="100">
+      <div class="eyebrow">Секретная карта</div>
+      <h2 id="secretTitle">Вы сняли маску</h2>
+      <p class="secret-text">Мало кто доходит до этой карты. Назовите промокод при записи на игру — ведущий будет знать, что вы из своих.</p>
+      <div class="promo" id="promo">Кто ты</div>
+      <div class="secret-actions">
+        <button class="btn" type="button" id="promoCopy">Скопировать промокод</button>
+        <a class="btn ghost" href="#book" id="promoBook">Записаться с промокодом</a>
+      </div>
+      <p class="secret-msg" id="promoMsg" role="status"></p>
+      <button class="secret-close" type="button" id="secretClose" aria-label="Закрыть">✕</button>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Маски сняты — на главную"><img src="/img/logo-mask-t.png" alt="" width="27" height="34"><span class="wordmark">Маски <b>сняты</b></span></a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#about">О нас</a>
+      <a href="#games">Афиша</a>
+      <a href="#formats">Правила</a>
+      <a href="#culture">Культура</a>
+      <a href="#gallery">Вечера</a>
+      <a href="#rating">Рейтинг</a>
+      <a href="#services">Услуги</a>
+    </nav>
+    <button class="phase" id="phaseBtn" type="button" aria-pressed="false" title="Сменить фазу: ночь или день"><span class="orb"></span><span id="phaseLabel">Ночь</span></button>
+    <a class="btn" href="#book">Записаться</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" data-tone="a" id="hero">
+    <canvas id="scene" aria-label="Карты ролей с масками, вращающиеся в золотом свете"></canvas>
+    <div class="wrap hero-inner">
+      <div>
+        <div class="eyebrow" id="heroEyebrow">Иммерсивное игровое шоу · Смоленск</div>
+        <h1><span class="ln"><span>Маски</span></span><span class="ln"><span class="gold">сняты</span></span></h1>
+        <p class="tagline">игра. познание. трансформация</p>
+        <p class="hero-sub">Место, где игра становится поводом встретиться, узнать друг друга с новой стороны и прожить вечер, который хочется продолжить.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#games">Записаться на игру <span class="arr">→</span></a>
+          <a class="btn ghost" href="#services">Корпоративы и дни рождения</a>
+        </div>
+        <div class="hint"><i></i>Нажмите на маску, чтобы снять её, или <a href="#quiz">узнайте свою роль</a></div>
+      </div>
+      <aside class="next" id="nextGame" aria-label="Ближайшая игра"></aside>
+    </div>
+  </section>
+  <div class="stats" data-tone="a">
+    <div class="wrap">
+      <div class="stat"><b>13 лет</b><span>за игровым столом</span></div>
+      <div class="stat"><b>1000+</b><span>проведённых игр</span></div>
+      <div class="stat"><b>200+</b><span>событий</span></div>
+      <div class="stat"><b>10</b><span>турниров</span></div>
+    </div>
+  </div>
+
+  <div class="marquee" data-tone="b" aria-hidden="true">
+    <div class="track">
+      <span>Люди</span><span>роли</span><span>Стратегии</span><span>возможности</span><span>Новые знакомства</span><span>эмоции и атмосфера</span><span>Стильный вечер</span><span>больше чем игра</span>
+      <span>Люди</span><span>роли</span><span>Стратегии</span><span>возможности</span><span>Новые знакомства</span><span>эмоции и атмосфера</span><span>Стильный вечер</span><span>больше чем игра</span>
+    </div>
+  </div>
+
+  <section class="about" data-tone="a" id="about">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">О нас · наша история</div>
+          <h2 class="h2" data-reveal>Больше, <em>чем игра</em></h2>
+        </div>
+        <p class="lead">Наша история началась 13 лет назад. Когда-то многие знали нас как Fox Club. За это время мы провели более 1000 игр, создали больше 200 событий и 10 турниров. Сегодня эта история продолжается под новым именем.</p>
+      </div>
+      <div class="about-grid">
+        <figure class="about-photo" data-tilt-soft>
+          <img src="/img/masks-row.jpg" alt="Маски ручной работы на подставках в тёплом свете" width="1096" height="860" loading="lazy">
+        </figure>
+        <div class="about-text">
+          <p>«Маски сняты» — это авторские игровые вечера, дни рождения, корпоративные события и турниры. Мы наблюдали за тысячами игроков, совершенствовали форматы и создали свою культуру игры — с уважением к человеку, вниманием к атмосфере и любовью к красивым деталям.</p>
+          <ul class="feats">
+            <li><b>Профессиональное ведение</b><span>Ведущий держит темп, объясняет правила и следит за честностью игры.</span></li>
+            <li><b>Маски ручной работы</b><span>Каждая маска — часть образа и атмосферы вечера.</span></li>
+            <li><b>Музыкальное сопровождение</b><span>Свет, музыка и паузы работают на напряжение за столом.</span></li>
+            <li><b>Продуманная организация</b><span>Каждая игра спланирована до мелочей — от рассадки до финала.</span></li>
+            <li><b>Собственная IT-платформа</b><span>История игр, статистика, достижения и игровой прогресс каждого игрока.</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="icons4">
+        <div><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="6"/><circle cx="12" cy="20" r="4.5"/><circle cx="36" cy="20" r="4.5"/><path d="M13 38c0-6 5-11 11-11s11 5 11 11M3 36c0-4.5 3.8-8 8.5-8M45 36c0-4.5-3.8-8-8.5-8"/></svg><span>Новые знакомства</span></div>
+        <div><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 8h28v12c0 9-6 18-14 20-8-2-14-11-14-20z"/><path d="M17 19c2-2 4-2 6 0M25 19c2-2 4-2 6 0M18 29c3 3 9 3 12 0"/></svg><span>Игра и стратегии</span></div>
+        <div><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18l8-9h16l8 9-16 22z"/><path d="M8 18h32M20 9l-4 9 8 22 8-22-4-9"/></svg><span>Эмоции и атмосфера</span></div>
+        <div><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6h10l-1 12a4 4 0 0 1-8 0zM24 6h10l-1 12a4 4 0 0 1-8 0z" transform="rotate(-8 19 12)"/><path d="M19 22v14M14 40h10M34 22v14M29 40h10"/></svg><span>Стильный вечер</span></div>
+      </div>
+      <blockquote class="founder" data-reveal>
+        <img src="/img/founder.jpg" alt="Анастасия Грец с маской в руках" width="396" height="592" loading="lazy">
+        <div>
+          <p>Но главное для нас остаётся неизменным — люди за игровым столом. Мы верим, что игра помогает замечать детали, слышать аргументы, принимать решения, лучше понимать других и открывать новые стороны самих себя.</p>
+          <p class="sign">Добро пожаловать за стол!</p>
+          <footer><b>Анастасия Грец</b><span>основатель «Маски сняты»</span></footer>
+        </div>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="sched" data-tone="b" id="games">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Регистрация на игру</div>
+          <h2 class="h2" data-reveal>Ближайшие <em>вечера</em></h2>
+        </div>
+        <p class="lead">Открытые игры проходят в Джи Баре на Николаева, 30, с 19:00 до 23:00. Точки под каждой игрой — места за столом, закрашенные уже заняты.</p>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Формат игры"></div>
+      <div class="events" id="events"></div>
+    </div>
+  </section>
+
+  <section class="formats" data-tone="a" id="formats">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Форматы игры</div>
+          <h2 class="h2" data-reveal>Две столицы. <em>Две школы</em> мафии.</h2>
+        </div>
+        <p class="lead">Играем по двум популярным наборам правил. В московской мафии важны логика и чистая игра, в питерской — много ролей и неожиданные комбинации. Выбирайте свою или играйте в обе: статистика и рейтинг у каждой свои.</p>
+      </div>
+      <div class="fmt-grid">
+        <article class="fmt" data-tilt-soft>
+          <span class="ghost-num" aria-hidden="true">М</span>
+          <h3 class="city-name">Московская<em>строгая классика на десятерых</em></h3>
+          <ul>
+            <li><b>Стол</b><span>Ровно 10 игроков: 6 мирных, шериф, 2 мафии и дон</span></li>
+            <li><b>Особенность</b><span>Игра втёмную: карты выбывших не вскрываются до конца партии</span></li>
+            <li><b>День</b><span>У каждого минута на речь, за нарушения ведущий даёт фолы</span></li>
+            <li><b>Для кого</b><span>Для тех, кто любит считать ходы и читать людей</span></li>
+          </ul>
+          <a class="btn" href="#games" data-filter="msk">Игры по московским правилам <span class="arr">→</span></a>
+        </article>
+        <article class="fmt" data-tilt-soft>
+          <span class="ghost-num" aria-hidden="true">П</span>
+          <h3 class="city-name">Питерская<em>много ролей, больше хаоса</em></h3>
+          <ul>
+            <li><b>Стол</b><span>От 10 до 14 игроков, к мафии и городу добавляются одиночки</span></li>
+            <li><b>Роли</b><span>Доктор, маньяк, любовница, комиссар и другие на выбор ведущего</span></li>
+            <li><b>Голосование</b><span>Кандидаты с двумя и более голосами получают минуту на оправдание</span></li>
+            <li><b>Для кого</b><span>Для больших компаний и тех, кто любит сюрпризы</span></li>
+          </ul>
+          <a class="btn" href="#games" data-filter="spb">Игры по питерским правилам <span class="arr">→</span></a>
+        </article>
+      </div>
+      <p class="fmt-note">Точный набор ролей ведущий объявляет перед началом вечера.</p>
+    </div>
+  </section>
+
+  <section class="roles" data-tone="b" id="roles">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Правила игры</div>
+          <h2 class="h2" data-reveal>Десять игроков. <em>Две команды.</em> Одна ночь.</h2>
+        </div>
+        <div>
+          <p class="lead">Каждый получает карту в закрытую, и никто не знает, кто сидит рядом. Светлые карты играют за город, тёмные — за мафию и одиночек. В московской мафии за столом десять человек:</p>
+          <div class="table10" id="table10" aria-hidden="true"></div>
+          <p class="table-cap">6 мирных · шериф · 2 мафии · дон. В питерской к ним добавляются доктор, маньяк и другие роли.</p>
+        </div>
+      </div>
+      <div class="deck" id="deck"></div>
+      <div class="draw-row">
+        <div class="mode" id="drawMode" role="group" aria-label="Правила раздачи"><button type="button" data-m="msk" aria-pressed="true">Московская</button><button type="button" data-m="spb" aria-pressed="false">Питерская</button></div>
+        <button class="btn" id="drawBtn" type="button">Вытянуть роль <span class="arr">→</span></button>
+        <p class="draw-out" id="drawOut" aria-live="polite">Нажмите на любую карту, чтобы перевернуть её, или доверьтесь раздаче.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quiz" data-tone="a" id="quiz">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Тест · 1 минута</div>
+          <h2 class="h2" data-reveal>Узнай <em>свою роль</em></h2>
+        </div>
+        <p class="lead">Пять вопросов о том, как вы ведёте себя среди людей. В конце — карта вашей роли и картинка для сторис, чтобы проверить друзей.</p>
+      </div>
+      <div class="quiz-stage" id="quizStage" aria-live="polite">
+        <div class="quiz-start">
+          <p class="quiz-intro">Кто вы за игровым столом: тот, кто видит всех насквозь, или тот, кого никто не заподозрит?</p>
+          <button class="btn" type="button" id="quizStart">Начать тест <span class="arr">→</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="evening" data-tone="b" id="evening">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Как проходит вечер</div>
+          <h2 class="h2" data-reveal>Ночь сменяет <em>день</em></h2>
+        </div>
+        <p class="lead">Игра делится на две фазы. Под музыкальное сопровождение и в масках ручной работы. Переключатель «Ночь / День» в шапке сайта работает так же: попробуйте.</p>
+      </div>
+      <div class="phases">
+        <div class="ph">
+          <h3><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M62 8a44 44 0 1 0 30 70A38 38 0 0 1 62 8z"/></svg>Ночь</h3>
+          <p>Все надевают маски. Ведущий будит роли по очереди, и они действуют молча, жестами.</p>
+          <ul>
+            <li>Мафия выбирает, кого убрать из игры</li>
+            <li>Дон ищет шерифа</li>
+            <li>Шериф проверяет одного игрока</li>
+          </ul>
+        </div>
+        <div class="ph">
+          <h3><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="20" fill="currentColor"/><g stroke="currentColor" stroke-width="7" stroke-linecap="round"><path d="M50 6v12M50 82v12M6 50h12M82 50h12M19 19l8 8M73 73l8 8M19 81l8-8M73 27l8-8"/></g></svg>День</h3>
+          <p>Город просыпается и узнаёт, кто выбыл. Начинается обсуждение: у каждого есть минута на речь.</p>
+          <ul>
+            <li>Игроки выставляют подозреваемых на голосование</li>
+            <li>За нарушения ведущий даёт фолы</li>
+            <li>Город решает, кто покинет стол</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="tl-line" id="tlLine"></div>
+        <div class="step"><time>18:45</time><div class="knob"></div><h4>Сбор гостей</h4><p>Встреча, знакомство, места за столом.</p></div>
+        <div class="step"><time>19:00</time><div class="knob"></div><h4>Начало шоу</h4><p>Ведущий открывает вечер и объясняет правила.</p></div>
+        <div class="step"><time>19:15</time><div class="knob"></div><h4>Первая партия</h4><p>Раздача ролей, маски, первая ночь.</p></div>
+        <div class="step"><time>20:00</time><div class="knob"></div><h4>Разбор</h4><p>Ведущий показывает, где был ключевой ход.</p></div>
+        <div class="step"><time>20:15</time><div class="knob"></div><h4>Ещё 3–4 партии</h4><p>Новые роли, новые союзы, новые стратегии.</p></div>
+        <div class="step"><time>23:00</time><div class="knob"></div><h4>Итоги вечера</h4><p>Лучшие игроки и очки в статистику клуба.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="culture" data-tone="a" id="culture">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Культура игры · важно</div>
+          <h2 class="h2" data-reveal>За столом <em>без масок</em></h2>
+        </div>
+        <p class="lead">Мы годами создавали свою культуру игры. Она простая: игра — повод встретиться, а не повод задеть другого. Поэтому за нашим столом действуют несколько правил, общих для всех.</p>
+      </div>
+      <div class="cult-grid">
+        <article><span class="num">I</span><h3>Уважение к человеку</h3><p>Спорим с ролью, а не с человеком. Никаких оскорблений и переходов на личности — ни во время игры, ни после.</p></article>
+        <article><span class="num">II</span><h3>Внимание к атмосфере</h3><p>Свет, музыка и тишина ночи — часть игры. Телефоны убираем, пока идёт партия.</p></article>
+        <article><span class="num">III</span><h3>Слово ведущего</h3><p>Ведущий отвечает за честность игры. Его решения за столом не обсуждаются, вопросы — после партии.</p></article>
+        <article><span class="num">IV</span><h3>Любовь к деталям</h3><p>Маски, карты и стиль вечера продуманы до мелочей. Берегите реквизит — он сделан вручную.</p></article>
+      </div>
+      <p class="fmt-note">Подробные правила ведущий объясняет в начале каждого вечера.</p>
+    </div>
+  </section>
+
+  <section class="gallery" data-tone="b" id="gallery">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Вечера клуба</div>
+          <h2 class="h2" data-reveal>Снимки, которые <em>проявляются</em></h2>
+        </div>
+        <p class="lead">Каждый вечер оставляет кадры. Наведите на снимок или подождите — он проявится, как настоящая плёнка. Нажмите, чтобы рассмотреть ближе.</p>
+      </div>
+      <div class="pol-table" id="polTable" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Фото вечера" hidden>
+    <button class="lb-close" type="button" aria-label="Закрыть">×</button>
+    <button class="lb-nav prev" type="button" aria-label="Предыдущее фото">‹</button>
+    <figure class="lb-fig"><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+    <button class="lb-nav next" type="button" aria-label="Следующее фото">›</button>
+  </div>
+
+  <section class="rating" data-tone="a" id="rating">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Статистика и рейтинг</div>
+          <h2 class="h2" data-reveal>Путь к финалу <em id="monthName">месяца</em></h2>
+        </div>
+        <p class="lead">На нашей собственной IT-платформе сохраняются история игр, статистика и игровой прогресс. Очки считаются по официальной системе спортивной мафии, как на турнирах, и рейтинг обновляется после каждой игры. Десять лучших за месяц играют финал. Московский и питерский рейтинги ведутся отдельно.</p>
+      </div>
+      <div class="rate-grid">
+        <div>
+          <div class="eyebrow">Очки за одну игру</div>
+          <div class="score-rules">
+            <div><span>Победа команды</span><b>+1</b></div>
+            <div><span>Доп. баллы ведущего победителю</span><b>+0,2…0,7</b></div>
+            <div><span>Доп. баллы проигравшему</span><b>до +0,4</b></div>
+            <div><span>Лучший ход: 2 чёрных / 3 чёрных</span><b>+0,25 / +0,5</b></div>
+            <div><span>Компенсация первому убитому (Ci)</span><b>до +0,4</b></div>
+            <div><span>Ошибка, повредившая команде</span><b>−0,4</b></div>
+            <div><span>Удаление / удаление с ППК</span><b>−0,5 / −1</b></div>
+            <div><span>Допуск в рейтинг месяца</span><b>от 6 игр</b></div>
+          </div>
+          <details class="rule-more">
+            <summary>Как работают допы, лучший ход и Ci</summary>
+            <p>Ведущий раздаёт за стол не больше 1,2 доп. балла. При ничьей допы не даются.</p>
+            <p>Лучший ход называет игрок, которого мафия убила первым. Он указывает трёх игроков, которых считает чёрными: за двух угаданных он получает +0,25, за трёх +0,5. Лучший ход дают только мирному и шерифу.</p>
+            <p>Ci = i × 0,4 / B. Здесь i — сколько раз за месяц игрока убивали первым, когда он был мирным или шерифом, а B — 40% от числа его игр за месяц (с округлением). Если i больше B, Ci = 0,4. Если красные проиграли, первый убитый получает Ci полностью. Если выиграли и в его лучшем ходе есть хотя бы один чёрный, он получает половину.</p>
+            <p>В питерской мафии считаются победа, допы и штрафы. Лучший ход и Ci не применяются.</p>
+          </details>
+          <div class="final-box">
+            <div class="eyebrow" id="finalLabel">До конца отбора</div>
+            <div class="cd" id="countdown">—</div>
+            <p id="finalWhen">Финал месяца проходит в первые выходные следующего месяца. Зрители приходят по билетам.</p>
+          </div>
+        </div>
+        <div>
+          <div class="rate-top">
+            <div class="mode" id="rateMode" role="group" aria-label="Рейтинг"><button type="button" data-m="msk" aria-pressed="true">Московская</button><button type="button" data-m="spb" aria-pressed="false">Питерская</button></div>
+            <select id="rateMonth" aria-label="Месяц рейтинга"></select>
+            <div class="grow"><input id="rateSearch" type="search" placeholder="Найти себя по нику" autocomplete="off" aria-label="Найти игрока по нику"></div>
+          </div>
+          <div class="tbl-wrap">
+            <table class="rt">
+              <thead><tr><th>#</th><th>Игрок</th><th>Игр</th><th>Поб.</th><th>Доп</th><th>ЛХ</th><th>Ci</th><th>Штр.</th><th>Σ</th><th>Ср.</th></tr></thead>
+              <tbody id="rateBody"></tbody>
+            </table>
+          </div>
+          <p class="rt-cap" id="rateCap"></p>
+          <div class="protos">
+            <h3>Протоколы игр</h3>
+            <div id="protoList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" data-tone="b" id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Услуги</div>
+          <h2 class="h2" data-reveal>Откройте для себя <em>«Маски сняты»</em></h2>
+        </div>
+        <p class="lead">Открытые игры для всех, турниры для сильных игроков и вечера под ваш повод: корпоратив или день рождения. Ведущий, маски, музыка и организация — на нас.</p>
+      </div>
+      <div class="plans">
+        <article class="plan" data-tilt>
+          <svg class="plan-ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="6"/><circle cx="12" cy="20" r="4.5"/><circle cx="36" cy="20" r="4.5"/><path d="M13 38c0-6 5-11 11-11s11 5 11 11M3 36c0-4.5 3.8-8 8.5-8M45 36c0-4.5-3.8-8-8.5-8"/></svg>
+          <h3>Открытые игры</h3>
+          <div class="price">Цена — <small>в афише</small></div>
+          <ul><li>Иммерсивное игровое шоу</li><li>Московская и питерская мафия</li><li>Новичкам рады: правила объясним</li></ul>
+          <a class="btn" href="#games">Выбрать вечер</a>
+        </article>
+        <article class="plan" data-tilt>
+          <svg class="plan-ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6h20v8a10 10 0 0 1-20 0z"/><path d="M14 9H7v3a7 7 0 0 0 7 7M34 9h7v3a7 7 0 0 1-7 7M24 24v8M16 42h16l-2-10H18z"/></svg>
+          <h3>Турниры</h3>
+          <div class="price">Финал <small>каждый месяц</small></div>
+          <ul><li>Рейтинг по правилам ФСМ</li><li>Финальный стол для топ-10</li><li>Билеты для зрителей</li></ul>
+          <a class="btn ghost" href="#rating">Смотреть рейтинг</a>
+        </article>
+        <article class="plan" data-tilt>
+          <svg class="plan-ico" viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="15" width="38" height="25" rx="2"/><path d="M17 15v-5h14v5M5 26h38M21 26v4h6v-4"/></svg>
+          <h3>Корпоративы</h3>
+          <div class="price">По <small>запросу</small></div>
+          <ul><li>Сценарий под вашу команду</li><li>На вашей площадке или у нас</li><li>Ведущий, маски, музыка</li></ul>
+          <a class="btn ghost" href="#book" data-plan="corporate">Обсудить</a>
+        </article>
+        <article class="plan" data-tilt>
+          <svg class="plan-ico" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="20" width="34" height="21" rx="1"/><rect x="5" y="14" width="38" height="7" rx="1"/><path d="M24 14v27M24 14c-3-6-10-8-11-4s7 4 11 4c4 0 12 0 11-4s-8-2-11 4"/></svg>
+          <h3>Дни рождения</h3>
+          <div class="price">По <small>запросу</small></div>
+          <ul><li>Именинник в главной роли</li><li>Тематика и дресс-код на выбор</li><li>Для компании от 10 гостей</li></ul>
+          <a class="btn ghost" href="#book" data-plan="private">Обсудить</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" data-tone="a" id="faq">
+    <div class="wrap faq-grid">
+      <div>
+        <div class="eyebrow">Вопросы</div>
+        <h2 class="h2" style="margin-top:18px" data-reveal>Перед <em>первым</em> вечером</h2>
+      </div>
+      <div>
+        <details open><summary>Я никогда не играл. Мне можно?</summary><p>Да. Ведущий объясняет правила в начале вечера и помогает в первой партии. За 13 лет за нашим столом начинали тысячи игроков.</p></details>
+        <details><summary>Можно прийти одному?</summary><p>Конечно. За столом всё равно никто никому не доверяет, так что неважно, с кем вы пришли.</p></details>
+        <details><summary>Чем московская мафия отличается от питерской?</summary><p>В московской строго 10 игроков и 4 роли, карты выбывших не вскрываются до конца партии, у каждого минута на речь. В питерской за столом больше людей и ролей: доктор, маньяк, любовница и другие. Оба формата подходят и новичкам, и опытным игрокам: перед партией ведущий объясняет правила, а попробовать можно оба.</p></details>
+        <details><summary>Как попасть в финал месяца?</summary><p>Сыграйте за месяц минимум 6 рейтинговых игр. Очки считаются по системе спортивной мафии: +1 за победу команды, доп. баллы от ведущего, лучший ход и компенсация первому убитому, минус штрафы. Десять лучших по сумме очков играют финал в первые выходные следующего месяца. Рейтинги московской и питерской мафии считаются отдельно.</p></details>
+        <details><summary>Где проходят игры?</summary><p>Открытые игры — в Джи Баре, Смоленск, ул. Николаева, 30. Начало в 19:00, вечер длится до 23:00. Корпоративы и дни рождения проводим на вашей площадке или у нас.</p></details>
+        <details><summary>Что взять с собой?</summary><p>Только хорошее настроение. Маски ручной работы и карты мы предоставим. Дресс-код не обязателен, но стильный вечер — часть игры.</p></details>
+        <details><summary>Вы раньше назывались Fox Club?</summary><p>Да. Наша история началась 13 лет назад, многие знали нас как Fox Club. Сегодня она продолжается под новым именем — «Маски сняты».</p></details>
+        <details><summary>Как отменить запись?</summary><p>Напишите нам за сутки до игры, и мы перенесём место на другой вечер.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" data-tone="b" id="book">
+    <div class="wrap book-grid">
+      <div>
+        <div class="eyebrow">Запись</div>
+        <h2 class="h2" style="margin-top:18px" data-reveal>Займите место <em>за столом</em></h2>
+        <p class="lead">Оставьте заявку на игру, корпоратив или день рождения. Мы подтвердим запись и напомним о вечере накануне.</p>
+        <div class="notes">
+          <div><b>i.</b><span>Мест за столом немного, поэтому запись обязательна.</span></div>
+          <div><b>ii.</b><span>Можно записать друзей: до 6 мест в одной заявке.</span></div>
+          <div><b>iii.</b><span>Открытые игры: Джи Бар, ул. Николаева, 30, начало в 19:00.</span></div>
+        </div>
+      </div>
+      <div id="bookBox">
+        <form id="form" novalidate>
+          <div class="field">
+            <label for="f-game">Игра</label>
+            <select id="f-game" name="game"></select>
+          </div>
+          <div class="row2">
+            <div class="field"><label for="f-name">Имя</label><input id="f-name" name="name" maxlength="80" autocomplete="name" placeholder="Как к вам обращаться"></div>
+            <div class="field"><label for="f-contact">Телефон или Telegram</label><input id="f-contact" name="contact" maxlength="80" autocomplete="tel" placeholder="+7… или @ник"></div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="f-seats">Мест</label>
+              <div class="stepper"><button type="button" id="minus" aria-label="Меньше мест">−</button><input id="f-seats" name="seats" type="number" min="1" max="6" value="1" inputmode="numeric"><button type="button" id="plus" aria-label="Больше мест">+</button></div>
+            </div>
+            <div class="field"><label for="f-note">Комментарий</label><input id="f-note" name="note" maxlength="500" placeholder="Например, первый раз"></div>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="f-website">Сайт</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <label class="consent" for="f-consent"><input id="f-consent" type="checkbox" required><span>Я согласен на обработку моих персональных данных (имя и контакт) для записи на игру в соответствии с <a href="/privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a>.</span></label>
+          <p class="err" id="err" role="alert"></p>
+          <div class="form-foot">
+            <div class="total" id="total"><small>Итого</small>900 ₽</div>
+            <button class="btn" type="submit">Отправить заявку <span class="arr">→</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer data-tone="a">
+  <div class="wrap">
+    <div class="foot-brand">
+      <img src="/img/logo-mask-t.png" alt="" width="66" height="82">
+      <div class="mega" aria-label="Маски сняты"><span>М</span><span>а</span><span>с</span><span>к</span><span>и</span><span class="sp"> </span><span class="g">с</span><span class="g">н</span><span class="g">я</span><span class="g">т</span><span class="g">ы</span></div>
+    </div>
+    <p class="tagline foot-tag">больше чем игра</p>
+    <p class="secret-hint">Говорят, где-то на этом сайте спрятана маска. Найдёте — получите подарок.</p>
+    <div class="contacts">
+      <div><span class="eyebrow">Открытые игры</span><p>Смоленск, Джи Бар<br>ул. Николаева, 30</p></div>
+      <div><span class="eyebrow">Время</span><p>Начало шоу в 19:00<br>до 23:00</p></div>
+      <div><span class="eyebrow">Новости и анонсы</span><p><a href="https://vk.ru/club_maskisnyty" target="_blank" rel="noopener">Группа ВКонтакте</a><br><span class="mute">подпишитесь, чтобы не пропустить игры</span></p></div>
+    </div>
+    <div class="foot-row">
+      <span>© <span id="year">2026</span> «Маски сняты» · мафия, Смоленск</span>
+      <nav aria-label="Нижнее меню"><a href="#about">О нас</a><a href="#games">Афиша</a><a href="#formats">Правила</a><a href="#gallery">Вечера</a><a href="#rating">Рейтинг</a><a href="#services">Услуги</a><a href="/privacy.html">Политика конфиденциальности</a><a href="/admin/">Вход для ведущих</a></nav>
+    </div>
+  </div>
+</footer>
+
+<script src="/vendor/three/three.min.js"></script>
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="/js/scoring.js"></script>
+<script src="/js/profile.js"></script>
+<script src="/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Маски сняты — админка</title>
+<link rel="icon" href="/img/favicon.png" type="image/png">
+<link rel="stylesheet" href="/vendor/fonts/cormorant-garamond/600.css">
+<link rel="stylesheet" href="/vendor/fonts/cormorant-garamond/700.css">
+<link rel="stylesheet" href="/vendor/fonts/cormorant-garamond/500-italic.css">
+<link rel="stylesheet" href="/vendor/fonts/jost/300.css">
+<link rel="stylesheet" href="/vendor/fonts/jost/400.css">
+<link rel="stylesheet" href="/vendor/fonts/jost/500.css">
+<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body data-tone="a">
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<section class="login" id="loginView" hidden>
+  <form class="login-card" id="loginForm" novalidate>
+    <a class="logo" href="/"><img src="/img/logo-mask-t.png" alt="" width="27" height="34"><span class="wordmark">Маски <b>сняты</b></span></a>
+    <h1>Вход для ведущих</h1>
+    <div class="field"><label for="lLogin">Логин</label><input id="lLogin" autocomplete="username" autocapitalize="none" spellcheck="false" required></div>
+    <div class="field"><label for="lPass">Пароль</label><input id="lPass" type="password" autocomplete="current-password" required></div>
+    <p class="err" id="lErr" role="alert"></p>
+    <button class="btn" type="submit">Войти <span class="arr">→</span></button>
+  </form>
+</section>
+
+<div class="app" id="appView" hidden>
+  <header class="abar">
+    <a class="logo" href="/"><img src="/img/logo-mask-t.png" alt="" width="27" height="34"><span class="wordmark">Маски <b>сняты</b></span></a><span class="admin-tag">админка</span>
+    <nav class="tabs" id="tabs" aria-label="Разделы админки"></nav>
+    <div class="who"><span id="whoName"></span><button class="mini" type="button" id="logoutBtn">Выйти</button></div>
+  </header>
+  <main class="amain" id="main"></main>
+</div>
+
+<template id="tplProtocol">
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2 id="pTitle">Новый протокол</h2>
+        <p class="hint">Итог каждого игрока считается сразу. Компенсация Ci добавляется в рейтинге месяца.</p>
+      </div>
+      <button class="mini" type="button" id="pReset">Очистить форму</button>
+    </div>
+    <div class="meta-row meta-row-5">
+      <div class="field"><label id="pFmtL">Формат</label><div class="mode" id="pFmt" role="group" aria-labelledby="pFmtL"><button type="button" data-m="msk" aria-pressed="true">Московская</button><button type="button" data-m="spb" aria-pressed="false">Питерская</button></div></div>
+      <div class="field"><label for="pDate">Дата</label><input id="pDate" type="date"></div>
+      <div class="field"><label for="pTable">Стол</label><input id="pTable" type="number" min="1" max="20" value="1" inputmode="numeric"></div>
+      <div class="field"><label for="pHost">Ведущий (судья)</label><input id="pHost" maxlength="60"></div>
+      <div class="field"><label for="pEvent">Вечер из афиши</label><select id="pEvent"></select></div>
+    </div>
+    <div class="field">
+      <label id="pResL">Результат</label>
+      <div class="res-row" id="pRes" role="group" aria-labelledby="pResL"></div>
+    </div>
+    <div class="field">
+      <label>Состав стола</label>
+      <div class="comp" id="pComp"></div>
+      <div class="tbl-wrap">
+        <table class="seat-tbl">
+          <thead><tr><th>№</th><th>Ник</th><th>Роль</th><th>Доп</th><th>Ошибки −0,4</th><th>Удаление</th><th>Убит первым</th><th style="text-align:right">Итог</th></tr></thead>
+          <tbody id="pSeats"></tbody>
+        </table>
+      </div>
+      <div class="step-btns" id="pSeatBtns"><button class="mini" type="button" id="pAdd">+ игрок</button><button class="mini" type="button" id="pRemove">− игрок</button></div>
+      <datalist id="nickList"></datalist>
+    </div>
+    <div class="field" id="pLxField">
+      <label>Лучший ход первого убитого</label>
+      <div class="lx-row">
+        <select id="lx0" aria-label="Первый номер в лучшем ходе"></select>
+        <select id="lx1" aria-label="Второй номер в лучшем ходе"></select>
+        <select id="lx2" aria-label="Третий номер в лучшем ходе"></select>
+        <button class="mini" type="button" id="lxClear">Снять «убит первым»</button>
+        <span class="lx-out" id="lxOut"></span>
+      </div>
+    </div>
+    <ul class="issues" id="pIssues" aria-live="polite"></ul>
+    <div class="confirm-new" id="pNew" hidden>
+      <p id="pNewText"></p>
+      <div class="admin-actions"><button class="btn" type="button" id="pNewYes">Создать игроков и сохранить</button><button class="mini" type="button" id="pNewNo">Исправить ники</button></div>
+    </div>
+    <div class="admin-actions">
+      <button class="btn" type="button" id="pSave">Сохранить протокол</button>
+      <span class="admin-status" id="pStatus" role="status"></span>
+    </div>
+  </section>
+</template>
+
+<script src="/js/scoring.js"></script>
+<script src="/admin/admin.js"></script>
+</body>
+</html>

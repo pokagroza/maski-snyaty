@@ -1,0 +1,42 @@
+# Локальный показ на своём компьютере: без домена и HTTPS, сайт открывается по http://<адрес-компьютера>:3000
+# Запуск:  docker compose -f docker-compose.local.yml up -d --build
+# Остановка: docker compose -f docker-compose.local.yml down
+# Не используйте этот файл на настоящем сервере — там нужен обычный docker-compose.yml с HTTPS.
+name: maski-local
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lupin
+      POSTGRES_USER: lupin
+      POSTGRES_PASSWORD: local-demo-only
+      TZ: Europe/Moscow
+    volumes:
+      - pgdata_local:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lupin -d lupin"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Режим разработки: вход в админку работает по обычному http (без HTTPS)
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgres://lupin:local-demo-only@db:5432/lupin
+      CLUB_TZ: Europe/Moscow
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TZ: Europe/Moscow
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata_local:

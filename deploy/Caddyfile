@@ -1,0 +1,20 @@
+{
+	email {$ACME_EMAIL}
+}
+
+# Основной сайт: HTTPS-сертификат выпускается и продлевается автоматически
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+	request_body {
+		max_size 1MB
+	}
+	reverse_proxy app:3000
+}
+
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
+}
